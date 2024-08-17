@@ -149,9 +149,27 @@ You may run `make install-training` to install training deps
 
 #### Testing
 
-Test can be run with `make install-test` then `make test`
+首先 `cd /data/Project_4_Thyroid_Final/16_Clip学习/2_Open_Clip/open_clip`
+
+之后运行下面的命令 `make install-test` & `make test` ，来安装所需要的 packages: 
+
+之后运行 测试 train 用的代码：
 
 `python -m pytest -x -s -v tests -k "training"` to run a specific test
+
+```
+这个命令使用 pytest 运行测试套件，具体来说：
+
+python -m pytest: 使用 Python 的模块运行方式来执行 pytest。这确保使用的是当前 Python 环境中安装的 pytest 版本。
+-x: 表示在第一个测试失败时立即停止整个测试运行。
+-s: 允许测试中的 print 语句的输出直接显示在控制台上，而不是被 pytest 捕获。
+-v: 启用详细输出模式，显示更多的测试信息。
+tests: 指定要运行测试的目录。这里假设有一个名为 "tests" 的目录包含所有测试文件。
+-k "training": 这是一个表达式，用于选择要运行的测试。它会只运行名称中包含 "training" 的测试函数或类。
+```
+
+<img width="936" alt="image" src="https://github.com/user-attachments/assets/e145a74b-3047-4721-ba1e-9d194450488f">
+
 
 Running regression tests against a specific git revision or tag:
 1. Generate testing data
