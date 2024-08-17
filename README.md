@@ -149,37 +149,55 @@ You may run `make install-training` to install training deps
 
 #### Testing
 
+##### Test 是否安装好了包
+
 首先 `cd /data/Project_4_Thyroid_Final/16_Clip学习/2_Open_Clip/open_clip`
 
-之后运行下面的命令 `make install-test` & `make test` ，来安装所需要的 packages: 
+之后运行下面的命令 `make install-test` 来安装所需要的 packages。之后运行 `make test`，来做 testing:
+
+
+* 这个代码实际上会 运行 Makefile 中的 `python -m pytest -x -s -v tests` 代码
+
+	<img width="943" alt="image" src="https://github.com/user-attachments/assets/ae081319-b393-4dea-b369-c62660903387">
+
+##### Test 代码 for Train
 
 之后运行 测试 train 用的代码：
 
 `python -m pytest -x -s -v tests -k "training"` to run a specific test
 
-```
-这个命令使用 pytest 运行测试套件，具体来说：
+* 这个命令会 对 open_clip/tests 目录下的 名字包含 "training" 的1个 .py 文件 做 pytest 测试
+	*  -x: 表示在第一个测试失败时立即停止整个测试运行。
+	*  -s: 允许测试中的 print 语句的输出直接显示在控制台上，而不是被 pytest 捕获。
+	*  -v: 启用详细输出模式，显示更多的测试信息。
+	*  tests: 指定要运行测试的目录。这里假设有一个名为 "tests" 的目录包含所有测试文件。
+	*  -k "training": 这是一个表达式，用于选择要运行的测试。它会只运行名称中包含 "training" 的测试函数或类。
 
-python -m pytest: 使用 Python 的模块运行方式来执行 pytest。这确保使用的是当前 Python 环境中安装的 pytest 版本。
--x: 表示在第一个测试失败时立即停止整个测试运行。
--s: 允许测试中的 print 语句的输出直接显示在控制台上，而不是被 pytest 捕获。
--v: 启用详细输出模式，显示更多的测试信息。
-tests: 指定要运行测试的目录。这里假设有一个名为 "tests" 的目录包含所有测试文件。
--k "training": 这是一个表达式，用于选择要运行的测试。它会只运行名称中包含 "training" 的测试函数或类。
-```
-
-<img width="936" alt="image" src="https://github.com/user-attachments/assets/e145a74b-3047-4721-ba1e-9d194450488f">
+	<img width="936" alt="image" src="https://github.com/user-attachments/assets/e145a74b-3047-4721-ba1e-9d194450488f">
 
 
 Running regression tests against a specific git revision or tag:
-1. Generate testing data
+
+1. Generate testing data (用 random data 来过一遍模型，看看能不能跑)
     ```sh
     python tests/util_test.py --model RN50 RN101 --save_model_list models.txt --git_revision 9d31b2ec4df6d8228f370ff20c8267ec6ba39383
     ```
     **_WARNING_: This will invoke git and modify your working tree, but will reset it to the current state after data has been generated! \
     Don't modify your working tree while test data is being generated this way.**
 
-2. Run regression tests
+	```
+	tests/util_test.py 的主要函数:
+	
+	create_random_text_data() 和 create_random_image_data(): 创建随机的文本和图像数据。
+	inference_text() 和 inference_image(): 使用模型对文本和图像数据进行推理。
+	create_test_data_for_model(): 为单个模型创建测试数据。
+	create_test_data(): 为多个模型创建测试数据。
+	main(): 解析命令行参数并调用相关函数来生成测试数据。
+	 ```
+ 	<img width="931" alt="image" src="https://github.com/user-attachments/assets/c38317e0-b8cc-449f-89b3-e40b743ee747">
+
+
+3. Run regression tests
     ```sh
     OPEN_CLIP_TEST_REG_MODELS=models.txt python -m pytest -x -s -v -m regression_test
     ```
